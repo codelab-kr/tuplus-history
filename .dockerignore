@@ -1,0 +1,13 @@
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.git/
+.husky/
+.github/
+.vscode/
+dist/
+logs/
+Dockerfile*
+docke-compose.yml*
+.env
