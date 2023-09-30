@@ -89,7 +89,7 @@ async function main() {
   // Start receiving messages from the anonymous queue.
   //
   await messageChannel.consume(queue, async (msg) => {
-    console.log("Received a 'viewed' message");
+    console.log("Received a 'viewed' message    ");
 
     if (!msg) {
       return;
