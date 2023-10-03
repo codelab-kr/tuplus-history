@@ -1,0 +1,31 @@
+node {
+    def app
+
+     stage('Clone repository') {
+         checkout scm
+     }
+
+     stage('Build image') {
+         app = docker.build("tuplus.azurecr.io/history")
+     }
+
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
+
+     stage('Push image') {
+         docker.withRegistry('https://tuplus.azurecr.io', 'azurecr') {
+             app.push("${env.BUILD_NUMBER}")
+         }
+     }
+
+     stage('Trigger ManifestUpdate') { 
+        echo "triggering tuplus-update-manifest job"
+        build job: 'tuplus-update-manifest', parameters: [
+            string(name: 'DOCKERTAG', value: env.BUILD_NUMBER),
+            string(name: 'SERVICE', value: 'history')
+        ]
+     }
+}
